@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.DoctorScheduleMapper">
+
+    <select id="findAll" resultType="DoctorSchedule">
+        SELECT id, doctor_name, department_name, DATE_FORMAT(work_date, '%Y-%m-%d') AS work_date,
+               time_slot, room, status
+        FROM doctor_schedules
+        ORDER BY work_date DESC, id DESC
+    </select>
+
+    <select id="findByDoctorName" resultType="DoctorSchedule">
+        SELECT id, doctor_name, department_name, DATE_FORMAT(work_date, '%Y-%m-%d') AS work_date,
+               time_slot, room, status
+        FROM doctor_schedules
+        WHERE doctor_name = #{doctorName}
+        ORDER BY work_date DESC, id DESC
+    </select>
+
+    <select id="findById" resultType="DoctorSchedule">
+        SELECT id, doctor_name, department_name, DATE_FORMAT(work_date, '%Y-%m-%d') AS work_date,
+               time_slot, room, status
+        FROM doctor_schedules
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="DoctorSchedule">
+        INSERT INTO doctor_schedules (doctor_name, department_name, work_date, time_slot, room, status)
+        VALUES (#{doctorName}, #{departmentName}, #{workDate}, #{timeSlot}, #{room}, #{status})
+    </insert>
+
+    <update id="update" parameterType="DoctorSchedule">
+        UPDATE doctor_schedules
+        SET doctor_name = #{doctorName},
+            department_name = #{departmentName},
+            work_date = #{workDate},
+            time_slot = #{timeSlot},
+            room = #{room},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM doctor_schedules
+        WHERE id = #{id}
+    </delete>
+</mapper>

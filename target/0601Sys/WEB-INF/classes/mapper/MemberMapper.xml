@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.MemberMapper">
+
+    <select id="findAll" resultType="Member">
+        SELECT id, name, gender, phone, level, points, status
+        FROM members
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="Member">
+        SELECT id, name, gender, phone, level, points, status
+        FROM members
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Member">
+        INSERT INTO members (name, gender, phone, level, points, status)
+        VALUES (#{name}, #{gender}, #{phone}, #{level}, #{points}, #{status})
+    </insert>
+
+    <update id="update" parameterType="Member">
+        UPDATE members
+        SET name = #{name},
+            gender = #{gender},
+            phone = #{phone},
+            level = #{level},
+            points = #{points},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM members
+        WHERE id = #{id}
+    </delete>
+</mapper>

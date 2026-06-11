@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.RegistrationMapper">
+
+    <select id="findAll" resultType="Registration">
+        SELECT id, patient_name, department_name, doctor_name, fee, status
+        FROM registrations
+        ORDER BY id DESC
+    </select>
+
+    <select id="findByPatientName" resultType="Registration">
+        SELECT id, patient_name, department_name, doctor_name, fee, status
+        FROM registrations
+        WHERE patient_name = #{patientName}
+        ORDER BY id DESC
+    </select>
+
+    <select id="findByDoctorName" resultType="Registration">
+        SELECT id, patient_name, department_name, doctor_name, fee, status
+        FROM registrations
+        WHERE doctor_name = #{doctorName}
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="Registration">
+        SELECT id, patient_name, department_name, doctor_name, fee, status
+        FROM registrations
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Registration">
+        INSERT INTO registrations (patient_name, department_name, doctor_name, fee, status)
+        VALUES (#{patientName}, #{departmentName}, #{doctorName}, #{fee}, #{status})
+    </insert>
+
+    <update id="update" parameterType="Registration">
+        UPDATE registrations
+        SET patient_name = #{patientName},
+            department_name = #{departmentName},
+            doctor_name = #{doctorName},
+            fee = #{fee},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM registrations
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE registrations
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+</mapper>

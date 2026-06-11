@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.DepartmentMapper">
+
+    <select id="findAll" resultType="Department">
+        SELECT id, name, description
+        FROM departments
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="Department">
+        SELECT id, name, description
+        FROM departments
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Department">
+        INSERT INTO departments (name, description)
+        VALUES (#{name}, #{description})
+    </insert>
+
+    <update id="update" parameterType="Department">
+        UPDATE departments
+        SET name = #{name},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM departments
+        WHERE id = #{id}
+    </delete>
+</mapper>

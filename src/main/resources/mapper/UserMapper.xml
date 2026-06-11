@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.UserMapper">
+
+    <insert id="ensureUser">
+        INSERT INTO users (username, password, real_name, role)
+        VALUES (#{username}, #{password}, #{realName}, #{role})
+        ON DUPLICATE KEY UPDATE real_name = VALUES(real_name), role = VALUES(role)
+    </insert>
+
+    <select id="findByUsernameAndPassword" resultType="User">
+        SELECT id, username, password, real_name, role
+        FROM users
+        WHERE username = #{username}
+          AND password = #{password}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE users
+        SET password = #{newPassword}
+        WHERE id = #{userId}
+          AND password = #{oldPassword}
+    </update>
+</mapper>
