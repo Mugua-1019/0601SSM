@@ -7,9 +7,13 @@
 如果项目在 Git 仓库中，使用下面的命令下载：
 
 ```bash
-git clone <项目仓库地址>
+git clone https://github.com/Mugua-1019/0601SSM.git
 cd 0601SSM
 ```
+
+也可以直接点击下载压缩包：
+
+[一键下载项目 ZIP](https://github.com/Mugua-1019/0601SSM/archive/refs/heads/main.zip)
 
 如果拿到的是压缩包，直接解压到本地目录即可，例如：
 
@@ -236,4 +240,3 @@ mvn clean package
 ```
 
 然后删除 Tomcat `webapps` 下旧的 `0601Sys` 文件夹和 `0601Sys.war`，再复制新的 `target/0601Sys.war` 重新启动 Tomcat。
-
