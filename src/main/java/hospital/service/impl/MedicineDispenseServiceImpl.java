@@ -23,6 +23,12 @@ public class MedicineDispenseServiceImpl implements MedicineDispenseService {
 
     @Override
     @Transactional
+    public void prescribe(String patientName, Medicine medicine, int quantity) {
+        dispenseMapper.insertDispense(patientName, medicine.getId(), medicine.getName(), quantity, "待发放");
+    }
+
+    @Override
+    @Transactional
     public void dispense(String patientName, Medicine medicine, int quantity, String pharmacistName) {
         int updated = dispenseMapper.decreaseStock(medicine.getId(), quantity);
         if (updated == 0) {

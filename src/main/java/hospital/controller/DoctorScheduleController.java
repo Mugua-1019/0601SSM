@@ -1,6 +1,8 @@
 package hospital.controller;
 
 import hospital.model.DoctorSchedule;
+import hospital.service.DepartmentService;
+import hospital.service.DoctorService;
 import hospital.service.DoctorScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,16 +19,24 @@ public class DoctorScheduleController {
     @Autowired
     private DoctorScheduleService scheduleService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private DoctorService doctorService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(HttpServletRequest req) {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
+            setOptions(req);
             return "doctor-schedule-form";
         }
 
         if ("edit".equals(action)) {
             req.setAttribute("schedule", scheduleService.findById(parseId(req.getParameter("id"))));
+            setOptions(req);
             return "doctor-schedule-form";
         }
 
@@ -45,6 +55,7 @@ public class DoctorScheduleController {
         if (isBlank(schedule.getDoctorName()) || isBlank(schedule.getWorkDate())) {
             req.setAttribute("error", "医生姓名和值班日期不能为空");
             req.setAttribute("schedule", schedule);
+            setOptions(req);
             return "doctor-schedule-form";
         }
 
@@ -60,6 +71,7 @@ public class DoctorScheduleController {
         } catch (IllegalArgumentException e) {
             req.setAttribute("error", "值班日期格式必须为 yyyy-MM-dd");
             req.setAttribute("schedule", schedule);
+            setOptions(req);
             return "doctor-schedule-form";
         }
     }
@@ -73,6 +85,11 @@ public class DoctorScheduleController {
         schedule.setRoom(trim(req.getParameter("room")));
         schedule.setStatus(trim(req.getParameter("status")));
         return schedule;
+    }
+
+    private void setOptions(HttpServletRequest req) {
+        req.setAttribute("departments", departmentService.findAll());
+        req.setAttribute("doctors", doctorService.findAll());
     }
 
     private int parseId(String value) {

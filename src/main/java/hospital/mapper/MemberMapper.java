@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface MemberMapper {
+    int insertUsersAsMembers();
+
     List<Member> findAll();
 
     Member findById(@Param("id") int id);

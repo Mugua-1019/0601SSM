@@ -1,9 +1,12 @@
 package hospital.controller;
 
 import hospital.model.MedicalRecord;
+import hospital.model.Medicine;
 import hospital.model.User;
 import hospital.service.DoctorScheduleService;
 import hospital.service.MedicalRecordService;
+import hospital.service.MedicineDispenseService;
+import hospital.service.MedicineService;
 import hospital.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,12 @@ public class DoctorPortalController {
 
     @Autowired
     private DoctorScheduleService scheduleService;
+
+    @Autowired
+    private MedicineService medicineService;
+
+    @Autowired
+    private MedicineDispenseService dispenseService;
 
     @RequestMapping(value = "/doctor-registrations", method = RequestMethod.GET)
     public String registrations(HttpServletRequest req) {
@@ -52,6 +61,7 @@ public class DoctorPortalController {
         req.setAttribute("doctorName", doctorName);
         req.setAttribute("patientName", trim(req.getParameter("patientName")));
         req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
+        setMedicines(req);
         return "doctor-record-form";
     }
 
@@ -71,10 +81,40 @@ public class DoctorPortalController {
             req.setAttribute("patientName", record.getPatientName());
             req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
             req.setAttribute("record", record);
+            setMedicines(req);
             return "doctor-record-form";
         }
 
+        Integer medicineId = parseOptionalId(req.getParameter("medicineId"));
+        Medicine medicine = null;
+        int quantity = 0;
+        if (medicineId != null) {
+            quantity = parseQuantity(req.getParameter("quantity"));
+            medicine = medicineService.findById(medicineId);
+            if (medicine == null) {
+                req.setAttribute("error", "药品不存在");
+                req.setAttribute("doctorName", doctorName);
+                req.setAttribute("patientName", record.getPatientName());
+                req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
+                req.setAttribute("record", record);
+                setMedicines(req);
+                return "doctor-record-form";
+            }
+            if (quantity <= 0) {
+                req.setAttribute("error", "开药数量必须大于0");
+                req.setAttribute("doctorName", doctorName);
+                req.setAttribute("patientName", record.getPatientName());
+                req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
+                req.setAttribute("record", record);
+                setMedicines(req);
+                return "doctor-record-form";
+            }
+        }
+
         recordService.insert(record);
+        if (medicine != null) {
+            dispenseService.prescribe(record.getPatientName(), medicine, quantity);
+        }
         Integer registrationId = parseOptionalId(req.getParameter("registrationId"));
         if (registrationId != null) {
             registrationService.updateStatus(registrationId, FINISHED_STATUS);
@@ -93,11 +133,22 @@ public class DoctorPortalController {
         return user.getUsername();
     }
 
+    private void setMedicines(HttpServletRequest req) {
+        req.setAttribute("medicines", medicineService.findAll());
+    }
+
     private Integer parseOptionalId(String value) {
         if (value == null || value.trim().isEmpty()) {
             return null;
         }
         return Integer.valueOf(value.trim());
+    }
+
+    private int parseQuantity(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return 0;
+        }
+        return Integer.parseInt(value.trim());
     }
 
     private String trim(String value) {

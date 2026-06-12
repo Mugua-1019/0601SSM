@@ -3,6 +3,8 @@ package hospital.controller;
 import hospital.model.Registration;
 import hospital.model.User;
 import hospital.service.ChargeService;
+import hospital.service.DepartmentService;
+import hospital.service.DoctorService;
 import hospital.service.MedicalRecordService;
 import hospital.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,16 @@ public class PatientPortalController {
     @Autowired
     private ChargeService chargeService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private DoctorService doctorService;
+
     @RequestMapping(value = "/patient-appointment", method = RequestMethod.GET)
     public String appointment(HttpServletRequest req) {
         req.setAttribute("patientName", currentPatientName(currentUser(req)));
+        setOptions(req);
         return "patient-appointment";
     }
 
@@ -47,6 +56,7 @@ public class PatientPortalController {
             req.setAttribute("error", "科室不能为空");
             req.setAttribute("registration", registration);
             req.setAttribute("patientName", patientName);
+            setOptions(req);
             return "patient-appointment";
         }
 
@@ -77,6 +87,11 @@ public class PatientPortalController {
 
     private User currentUser(HttpServletRequest req) {
         return (User) req.getSession().getAttribute("loginUser");
+    }
+
+    private void setOptions(HttpServletRequest req) {
+        req.setAttribute("departments", departmentService.findAll());
+        req.setAttribute("doctors", doctorService.findAll());
     }
 
     private String currentPatientName(User user) {

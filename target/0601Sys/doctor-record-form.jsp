@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="hospital.model.MedicalRecord" %>
+<%@ page import="hospital.model.Medicine" %>
+<%@ page import="java.util.List" %>
 <%
     MedicalRecord record = (MedicalRecord) request.getAttribute("record");
+    List<Medicine> medicines = (List<Medicine>) request.getAttribute("medicines");
     String error = (String) request.getAttribute("error");
     String doctorName = (String) request.getAttribute("doctorName");
     String patientName = (String) request.getAttribute("patientName");
@@ -36,6 +39,19 @@
                         <td><textarea name="diagnosis" rows="3" cols="30"><%= record == null || record.getDiagnosis() == null ? "" : record.getDiagnosis() %></textarea></td>
                         <td align="right">治疗方案</td>
                         <td><textarea name="treatment" rows="3" cols="30"><%= record == null || record.getTreatment() == null ? "" : record.getTreatment() %></textarea></td>
+                    </tr>
+                    <tr>
+                        <td align="right">medicine</td>
+                        <td>
+                            <select name="medicineId">
+                                <option value="">--select--</option>
+                                <% if (medicines != null) { for (Medicine medicine : medicines) { %>
+                                <option value="<%= medicine.getId() %>"><%= medicine.getName() == null ? "" : medicine.getName() %></option>
+                                <% }} %>
+                            </select>
+                        </td>
+                        <td align="right">quantity</td>
+                        <td><input type="number" name="quantity" value="1" min="1" /></td>
                     </tr>
                     <tr>
                         <td colspan="4" align="center">

@@ -1,8 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="hospital.model.Department" %>
+<%@ page import="hospital.model.Doctor" %>
 <%@ page import="hospital.model.Registration" %>
+<%@ page import="java.util.List" %>
 <%
     String patientName = (String) request.getAttribute("patientName");
     Registration registration = (Registration) request.getAttribute("registration");
+    List<Department> departments = (List<Department>) request.getAttribute("departments");
+    List<Doctor> doctors = (List<Doctor>) request.getAttribute("doctors");
+    String currentDepartmentName = registration == null || registration.getDepartmentName() == null ? "" : registration.getDepartmentName();
+    String currentDoctorName = registration == null || registration.getDoctorName() == null ? "" : registration.getDoctorName();
     String error = (String) request.getAttribute("error");
 %>
 <!DOCTYPE html>
@@ -26,11 +33,29 @@
                         <td width="20%" align="right">患者姓名</td>
                         <td width="20%"><input type="text" value="<%= patientName == null ? "" : patientName %>" readonly="readonly" /></td>
                         <td width="10%" align="right">科室</td>
-                        <td width="50%"><input type="text" name="departmentName" value="<%= registration == null || registration.getDepartmentName() == null ? "" : registration.getDepartmentName() %>" /></td>
+                        <td width="50%">
+                            <select name="departmentName">
+                                <option value="">--select--</option>
+                                <% if (departments != null) { for (Department department : departments) {
+                                    String departmentName = department.getName() == null ? "" : department.getName();
+                                %>
+                                <option value="<%= departmentName %>" <%= departmentName.equals(currentDepartmentName) ? "selected" : "" %>><%= departmentName %></option>
+                                <% }} %>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td align="right">医生</td>
-                        <td><input type="text" name="doctorName" value="<%= registration == null || registration.getDoctorName() == null ? "" : registration.getDoctorName() %>" /></td>
+                        <td>
+                            <select name="doctorName">
+                                <option value="">--select--</option>
+                                <% if (doctors != null) { for (Doctor doctor : doctors) {
+                                    String doctorName = doctor.getName() == null ? "" : doctor.getName();
+                                %>
+                                <option value="<%= doctorName %>" <%= doctorName.equals(currentDoctorName) ? "selected" : "" %>><%= doctorName %></option>
+                                <% }} %>
+                            </select>
+                        </td>
                         <td align="right">挂号费</td>
                         <td><input type="text" name="fee" value="<%= registration == null || registration.getFee() == null ? "0" : registration.getFee() %>" /></td>
                     </tr>

@@ -1,6 +1,7 @@
 package hospital.controller;
 
 import hospital.model.Doctor;
+import hospital.service.DepartmentService;
 import hospital.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,17 +17,22 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(HttpServletRequest req) {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
+            setDepartments(req);
             return "doctor-form";
         }
 
         if ("edit".equals(action)) {
             Doctor doctor = doctorService.findById(parseId(req.getParameter("id")));
             req.setAttribute("doctor", doctor);
+            setDepartments(req);
             return "doctor-form";
         }
 
@@ -45,6 +51,7 @@ public class DoctorController {
         if (doctor.getName() == null || doctor.getName().trim().isEmpty()) {
             req.setAttribute("error", "医生姓名不能为空");
             req.setAttribute("doctor", doctor);
+            setDepartments(req);
             return "doctor-form";
         }
 
@@ -66,6 +73,10 @@ public class DoctorController {
         doctor.setPhone(trim(req.getParameter("phone")));
         doctor.setEmail(trim(req.getParameter("email")));
         return doctor;
+    }
+
+    private void setDepartments(HttpServletRequest req) {
+        req.setAttribute("departments", departmentService.findAll());
     }
 
     private int parseId(String value) {

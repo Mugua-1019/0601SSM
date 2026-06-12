@@ -1,7 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="hospital.model.Department" %>
+<%@ page import="hospital.model.Doctor" %>
 <%@ page import="hospital.model.DoctorSchedule" %>
+<%@ page import="java.util.List" %>
 <%
     DoctorSchedule schedule = (DoctorSchedule) request.getAttribute("schedule");
+    List<Department> departments = (List<Department>) request.getAttribute("departments");
+    List<Doctor> doctors = (List<Doctor>) request.getAttribute("doctors");
+    String currentDepartmentName = schedule == null || schedule.getDepartmentName() == null ? "" : schedule.getDepartmentName();
+    String currentDoctorName = schedule == null || schedule.getDoctorName() == null ? "" : schedule.getDoctorName();
     String error = (String) request.getAttribute("error");
     boolean edit = schedule != null && schedule.getId() > 0;
 %>
@@ -26,9 +33,27 @@
                 <table>
                     <tr>
                         <td width="20%" align="right">医生姓名</td>
-                        <td width="20%"><input type="text" name="doctorName" value="<%= schedule == null || schedule.getDoctorName() == null ? "" : schedule.getDoctorName() %>" /></td>
+                        <td width="20%">
+                            <select name="doctorName">
+                                <option value="">--select--</option>
+                                <% if (doctors != null) { for (Doctor doctor : doctors) {
+                                    String doctorName = doctor.getName() == null ? "" : doctor.getName();
+                                %>
+                                <option value="<%= doctorName %>" <%= doctorName.equals(currentDoctorName) ? "selected" : "" %>><%= doctorName %></option>
+                                <% }} %>
+                            </select>
+                        </td>
                         <td width="10%" align="right">科室</td>
-                        <td width="50%"><input type="text" name="departmentName" value="<%= schedule == null || schedule.getDepartmentName() == null ? "" : schedule.getDepartmentName() %>" /></td>
+                        <td width="50%">
+                            <select name="departmentName">
+                                <option value="">--select--</option>
+                                <% if (departments != null) { for (Department department : departments) {
+                                    String departmentName = department.getName() == null ? "" : department.getName();
+                                %>
+                                <option value="<%= departmentName %>" <%= departmentName.equals(currentDepartmentName) ? "selected" : "" %>><%= departmentName %></option>
+                                <% }} %>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td align="right">值班日期</td>

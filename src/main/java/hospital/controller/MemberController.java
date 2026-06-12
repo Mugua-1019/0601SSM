@@ -34,6 +34,7 @@ public class MemberController {
             return "redirect:/members";
         }
 
+        memberService.insertUsersAsMembers();
         req.setAttribute("members", memberService.findAll());
         return "member-list";
     }

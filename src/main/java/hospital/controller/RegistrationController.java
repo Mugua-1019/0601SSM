@@ -1,6 +1,8 @@
 package hospital.controller;
 
 import hospital.model.Registration;
+import hospital.service.DepartmentService;
+import hospital.service.DoctorService;
 import hospital.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,16 +19,24 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private DoctorService doctorService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(HttpServletRequest req) {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
+            setOptions(req);
             return "registration-form";
         }
 
         if ("edit".equals(action)) {
             req.setAttribute("registration", registrationService.findById(parseId(req.getParameter("id"))));
+            setOptions(req);
             return "registration-form";
         }
 
@@ -45,6 +55,7 @@ public class RegistrationController {
         if (registration.getPatientName() == null || registration.getPatientName().trim().isEmpty()) {
             req.setAttribute("error", "患者姓名不能为空");
             req.setAttribute("registration", registration);
+            setOptions(req);
             return "registration-form";
         }
 
@@ -66,6 +77,11 @@ public class RegistrationController {
         registration.setFee(parseMoney(req.getParameter("fee")));
         registration.setStatus(trim(req.getParameter("status")));
         return registration;
+    }
+
+    private void setOptions(HttpServletRequest req) {
+        req.setAttribute("departments", departmentService.findAll());
+        req.setAttribute("doctors", doctorService.findAll());
     }
 
     private int parseId(String value) {

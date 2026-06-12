@@ -16,6 +16,12 @@ public class MemberServiceImpl implements MemberService {
     private MemberMapper memberMapper;
 
     @Override
+    @Transactional
+    public int insertUsersAsMembers() {
+        return memberMapper.insertUsersAsMembers();
+    }
+
+    @Override
     public List<Member> findAll() {
         return memberMapper.findAll();
     }

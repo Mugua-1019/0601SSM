@@ -5,6 +5,8 @@ import hospital.model.Member;
 import java.util.List;
 
 public interface MemberService {
+    int insertUsersAsMembers();
+
     List<Member> findAll();
 
     Member findById(int id);

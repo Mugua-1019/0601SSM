@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="hospital.model.Department" %>
 <%@ page import="hospital.model.Doctor" %>
+<%@ page import="java.util.List" %>
 <%
     Doctor doctor = (Doctor) request.getAttribute("doctor");
+    List<Department> departments = (List<Department>) request.getAttribute("departments");
+    String currentDepartment = doctor == null || doctor.getDepartment() == null ? "" : doctor.getDepartment();
     String error = (String) request.getAttribute("error");
     boolean edit = doctor != null && doctor.getId() > 0;
 %>
@@ -28,7 +32,16 @@
                         <td width="20%" align="right">医生姓名</td>
                         <td width="20%"><input type="text" name="name" value="<%= doctor == null || doctor.getName() == null ? "" : doctor.getName() %>" /></td>
                         <td width="10%" align="right">所属科室</td>
-                        <td width="50%"><input type="text" name="department" value="<%= doctor == null || doctor.getDepartment() == null ? "" : doctor.getDepartment() %>" /></td>
+                        <td width="50%">
+                            <select name="department">
+                                <option value="">--select--</option>
+                                <% if (departments != null) { for (Department department : departments) {
+                                    String departmentName = department.getName() == null ? "" : department.getName();
+                                %>
+                                <option value="<%= departmentName %>" <%= departmentName.equals(currentDepartment) ? "selected" : "" %>><%= departmentName %></option>
+                                <% }} %>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td align="right">职称</td>
