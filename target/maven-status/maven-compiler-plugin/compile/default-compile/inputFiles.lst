@@ -22,6 +22,7 @@ C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\MedicineMapper.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\MemberMapper.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\PatientMapper.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\RegistrationMapper.java
+C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\SystemConfigMapper.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\mapper\UserMapper.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\Charge.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\Department.java
@@ -33,6 +34,7 @@ C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\MedicineDispense.jav
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\Member.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\Patient.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\Registration.java
+C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\SystemConfig.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\model\User.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\ChargeService.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\DepartmentService.java
@@ -48,6 +50,7 @@ C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\MedicineServi
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\MemberServiceImpl.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\PatientServiceImpl.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\RegistrationServiceImpl.java
+C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\SystemConfigServiceImpl.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\impl\UserServiceImpl.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\MedicalRecordService.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\MedicineDispenseService.java
@@ -55,4 +58,5 @@ C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\MedicineService.ja
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\MemberService.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\PatientService.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\RegistrationService.java
+C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\SystemConfigService.java
 C:\Users\15982\Desktop\0601SSM\src\main\java\hospital\service\UserService.java

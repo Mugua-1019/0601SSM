@@ -7,5 +7,9 @@ public interface UserService {
 
     User findByUsernameAndPassword(String username, String password);
 
+    User findByUsername(String username);
+
+    int registerPatient(User user);
+
     int updatePassword(int userId, String oldPassword, String newPassword);
 }

@@ -13,6 +13,10 @@ public interface ChargeService {
 
     Charge findById(int id);
 
+    boolean hasUnpaid(String patientName);
+
+    int updateStatus(int id, String status);
+
     int insert(Charge charge);
 
     int update(Charge charge);

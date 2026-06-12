@@ -36,6 +36,17 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     @Override
+    public boolean hasUnpaid(String patientName) {
+        return chargeMapper.countUnpaidByPatientName(patientName) > 0;
+    }
+
+    @Override
+    @Transactional
+    public int updateStatus(int id, String status) {
+        return chargeMapper.updateStatus(id, status);
+    }
+
+    @Override
     @Transactional
     public int insert(Charge charge) {
         return chargeMapper.insert(charge);

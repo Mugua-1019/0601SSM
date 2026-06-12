@@ -42,6 +42,7 @@
                 </div>
             </div>
             <div class="btn"><input type="submit" class="login-btn" value="" /></div>
+            <div style="text-align:center;margin-top:10px;"><a href="register">患者注册</a></div>
         </form>
     </div>
     <div id="footer"> </div>

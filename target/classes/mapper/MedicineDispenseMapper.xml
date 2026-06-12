@@ -10,6 +10,12 @@
         ORDER BY id DESC
     </select>
 
+    <select id="findById" resultType="MedicineDispense">
+        SELECT id, patient_name, medicine_id, medicine_name, quantity, pharmacist_name, dispensed_at
+        FROM medicine_dispenses
+        WHERE id = #{id}
+    </select>
+
     <update id="decreaseStock">
         UPDATE medicines
         SET stock = stock - #{quantity}
@@ -21,4 +27,11 @@
         INSERT INTO medicine_dispenses (patient_name, medicine_id, medicine_name, quantity, pharmacist_name)
         VALUES (#{patientName}, #{medicineId}, #{medicineName}, #{quantity}, #{pharmacistName})
     </insert>
+
+    <update id="markDispensed">
+        UPDATE medicine_dispenses
+        SET pharmacist_name = #{pharmacistName},
+            dispensed_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -9,6 +9,8 @@
     String doctorName = (String) request.getAttribute("doctorName");
     String patientName = (String) request.getAttribute("patientName");
     String registrationId = (String) request.getAttribute("registrationId");
+    String selectedMedicineId = (String) request.getAttribute("medicineId");
+    String selectedQuantity = (String) request.getAttribute("quantity");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,17 +43,17 @@
                         <td><textarea name="treatment" rows="3" cols="30"><%= record == null || record.getTreatment() == null ? "" : record.getTreatment() %></textarea></td>
                     </tr>
                     <tr>
-                        <td align="right">medicine</td>
+                        <td align="right">药品</td>
                         <td>
                             <select name="medicineId">
                                 <option value="">--select--</option>
                                 <% if (medicines != null) { for (Medicine medicine : medicines) { %>
-                                <option value="<%= medicine.getId() %>"><%= medicine.getName() == null ? "" : medicine.getName() %></option>
+                                <option value="<%= medicine.getId() %>" <%= String.valueOf(medicine.getId()).equals(selectedMedicineId) ? "selected" : "" %>><%= medicine.getName() == null ? "" : medicine.getName() %>（单价：<%= medicine.getPrice() == null ? "0" : medicine.getPrice() %>）</option>
                                 <% }} %>
                             </select>
                         </td>
-                        <td align="right">quantity</td>
-                        <td><input type="number" name="quantity" value="1" min="1" /></td>
+                        <td align="right">数量</td>
+                        <td><input type="number" name="quantity" value="<%= selectedQuantity == null || selectedQuantity.trim().isEmpty() ? "1" : selectedQuantity %>" min="1" /></td>
                     </tr>
                     <tr>
                         <td colspan="4" align="center">

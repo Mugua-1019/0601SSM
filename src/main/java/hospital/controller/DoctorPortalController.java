@@ -2,7 +2,10 @@ package hospital.controller;
 
 import hospital.model.MedicalRecord;
 import hospital.model.Medicine;
+import hospital.model.Registration;
 import hospital.model.User;
+import hospital.model.Charge;
+import hospital.service.ChargeService;
 import hospital.service.DoctorScheduleService;
 import hospital.service.MedicalRecordService;
 import hospital.service.MedicineDispenseService;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 @Controller
 public class DoctorPortalController {
@@ -33,6 +37,9 @@ public class DoctorPortalController {
 
     @Autowired
     private MedicineDispenseService dispenseService;
+
+    @Autowired
+    private ChargeService chargeService;
 
     @RequestMapping(value = "/doctor-registrations", method = RequestMethod.GET)
     public String registrations(HttpServletRequest req) {
@@ -81,6 +88,8 @@ public class DoctorPortalController {
             req.setAttribute("patientName", record.getPatientName());
             req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
             req.setAttribute("record", record);
+            req.setAttribute("medicineId", trim(req.getParameter("medicineId")));
+            req.setAttribute("quantity", trim(req.getParameter("quantity")));
             setMedicines(req);
             return "doctor-record-form";
         }
@@ -97,6 +106,8 @@ public class DoctorPortalController {
                 req.setAttribute("patientName", record.getPatientName());
                 req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
                 req.setAttribute("record", record);
+                req.setAttribute("medicineId", trim(req.getParameter("medicineId")));
+                req.setAttribute("quantity", trim(req.getParameter("quantity")));
                 setMedicines(req);
                 return "doctor-record-form";
             }
@@ -106,16 +117,26 @@ public class DoctorPortalController {
                 req.setAttribute("patientName", record.getPatientName());
                 req.setAttribute("registrationId", trim(req.getParameter("registrationId")));
                 req.setAttribute("record", record);
+                req.setAttribute("medicineId", trim(req.getParameter("medicineId")));
+                req.setAttribute("quantity", trim(req.getParameter("quantity")));
                 setMedicines(req);
                 return "doctor-record-form";
             }
         }
 
         recordService.insert(record);
+        Integer registrationId = parseOptionalId(req.getParameter("registrationId"));
+        if (registrationId != null) {
+            Registration registration = registrationService.findById(registrationId);
+            if (registration != null && registration.getFee() != null) {
+                insertCharge(record.getPatientName(), "挂号费", registration.getFee());
+            }
+        }
         if (medicine != null) {
             dispenseService.prescribe(record.getPatientName(), medicine, quantity);
+            BigDecimal amount = medicine.getPrice() == null ? BigDecimal.ZERO : medicine.getPrice().multiply(new BigDecimal(quantity));
+            insertCharge(record.getPatientName(), medicine.getName(), amount);
         }
-        Integer registrationId = parseOptionalId(req.getParameter("registrationId"));
         if (registrationId != null) {
             registrationService.updateStatus(registrationId, FINISHED_STATUS);
         }
@@ -135,6 +156,15 @@ public class DoctorPortalController {
 
     private void setMedicines(HttpServletRequest req) {
         req.setAttribute("medicines", medicineService.findAll());
+    }
+
+    private void insertCharge(String patientName, String itemName, BigDecimal amount) {
+        Charge charge = new Charge();
+        charge.setPatientName(patientName);
+        charge.setItemName(itemName);
+        charge.setAmount(amount);
+        charge.setStatus("未缴费");
+        chargeService.insert(charge);
     }
 
     private Integer parseOptionalId(String value) {

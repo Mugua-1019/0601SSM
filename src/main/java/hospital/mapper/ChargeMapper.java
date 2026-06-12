@@ -16,6 +16,10 @@ public interface ChargeMapper {
 
     Charge findById(@Param("id") int id);
 
+    int countUnpaidByPatientName(@Param("patientName") String patientName);
+
+    int updateStatus(@Param("id") int id, @Param("status") String status);
+
     int insert(Charge charge);
 
     int update(Charge charge);

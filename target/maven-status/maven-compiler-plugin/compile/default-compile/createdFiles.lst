@@ -5,6 +5,8 @@ hospital\service\impl\DoctorScheduleServiceImpl.class
 hospital\model\MedicineDispense.class
 hospital\controller\PatientPortalController.class
 hospital\service\impl\RegistrationServiceImpl.class
+hospital\service\impl\SystemConfigServiceImpl.class
+hospital\mapper\SystemConfigMapper.class
 hospital\model\User.class
 hospital\interceptor\LoginInterceptor.class
 hospital\mapper\DepartmentMapper.class
@@ -22,6 +24,8 @@ hospital\mapper\MedicineMapper.class
 hospital\service\impl\MedicalRecordServiceImpl.class
 hospital\service\impl\MemberServiceImpl.class
 hospital\mapper\DoctorMapper.class
+hospital\service\SystemConfigService.class
+hospital\model\SystemConfig.class
 hospital\controller\DoctorScheduleController.class
 hospital\controller\DoctorController.class
 hospital\service\DepartmentService.class

@@ -11,6 +11,16 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS system_configs (
+    config_key VARCHAR(50) PRIMARY KEY,
+    config_value VARCHAR(100) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO system_configs (config_key, config_value)
+VALUES ('registration_fee', '20.00')
+ON DUPLICATE KEY UPDATE config_value = VALUES(config_value);
+
 INSERT INTO users (username, password, real_name, role)
 VALUES ('admin', '123456', '系统管理员', 'admin')
 ON DUPLICATE KEY UPDATE real_name = VALUES(real_name), role = VALUES(role);

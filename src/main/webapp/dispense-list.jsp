@@ -5,6 +5,7 @@
 <%
     List<Medicine> medicines = (List<Medicine>) request.getAttribute("medicines");
     List<MedicineDispense> dispenses = (List<MedicineDispense>) request.getAttribute("dispenses");
+    String error = (String) request.getAttribute("error");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,6 +22,7 @@
 <div id="contentWrap">
     <div id="widget table-widget">
         <div class="pageTitle">药品发放</div>
+        <% if (error != null) { %><p style="color:red;margin-left:20px;"><%= error %></p><% } %>
         <div class="pageColumn">
             <div class="pageButton">
                 <a href="dispenses?action=new"><img src="images/t01.png" title="新增发放"/></a>
@@ -33,6 +35,7 @@
                 <th width="">规格</th>
                 <th width="">库存数量</th>
                 <th width="">售价</th>
+                <th width="10%">操作</th>
                 <th width="10%">操作</th>
                 </thead>
                 <tbody>
@@ -73,6 +76,11 @@
                     <td><%= dispense.getQuantity() %></td>
                     <td><%= dispense.getPharmacistName() == null ? "" : dispense.getPharmacistName() %></td>
                     <td><%= dispense.getDispensedAt() == null ? "" : dispense.getDispensedAt() %></td>
+                    <td>
+                        <% if ("待发放".equals(dispense.getPharmacistName())) { %>
+                        <a href="dispenses?action=release&id=<%= dispense.getId() %>">发药</a>
+                        <% } %>
+                    </td>
                 </tr>
                 <% }} %>
                 </tbody>

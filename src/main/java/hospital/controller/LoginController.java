@@ -24,6 +24,40 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String registerPage() {
+        return "register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(HttpServletRequest req) {
+        String username = trim(req.getParameter("username"));
+        String password = trim(req.getParameter("password"));
+        String confirmPassword = trim(req.getParameter("confirmPassword"));
+        String realName = trim(req.getParameter("realName"));
+
+        if (isBlank(username) || isBlank(password) || isBlank(confirmPassword) || isBlank(realName)) {
+            req.setAttribute("error", "账号、姓名和密码不能为空");
+            return "register";
+        }
+        if (!password.equals(confirmPassword)) {
+            req.setAttribute("error", "两次输入的密码不一致");
+            return "register";
+        }
+        if (userService.findByUsername(username) != null) {
+            req.setAttribute("error", "账号已存在");
+            return "register";
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRealName(realName);
+        userService.registerPatient(user);
+        req.setAttribute("error", "注册成功，请登录");
+        return "login";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(HttpServletRequest req) {
         String username = req.getParameter("username");

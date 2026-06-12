@@ -37,6 +37,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userMapper.findByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public int registerPatient(User user) {
+        user.setRole("patient");
+        return userMapper.insert(user);
+    }
+
+    @Override
     @Transactional
     public int updatePassword(int userId, String oldPassword, String newPassword) {
         return userMapper.updatePassword(userId, oldPassword, newPassword);

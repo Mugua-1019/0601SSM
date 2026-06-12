@@ -22,6 +22,11 @@ public class MedicineDispenseServiceImpl implements MedicineDispenseService {
     }
 
     @Override
+    public MedicineDispense findById(int id) {
+        return dispenseMapper.findById(id);
+    }
+
+    @Override
     @Transactional
     public void prescribe(String patientName, Medicine medicine, int quantity) {
         dispenseMapper.insertDispense(patientName, medicine.getId(), medicine.getName(), quantity, "待发放");
@@ -35,5 +40,19 @@ public class MedicineDispenseServiceImpl implements MedicineDispenseService {
             throw new IllegalStateException("药品库存不足");
         }
         dispenseMapper.insertDispense(patientName, medicine.getId(), medicine.getName(), quantity, pharmacistName);
+    }
+
+    @Override
+    @Transactional
+    public void dispensePrescription(int id, String pharmacistName) {
+        MedicineDispense dispense = dispenseMapper.findById(id);
+        if (dispense == null) {
+            throw new IllegalStateException("处方不存在");
+        }
+        int updated = dispenseMapper.decreaseStock(dispense.getMedicineId(), dispense.getQuantity());
+        if (updated == 0) {
+            throw new IllegalStateException("药品库存不足");
+        }
+        dispenseMapper.markDispensed(id, pharmacistName);
     }
 }

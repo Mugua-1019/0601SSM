@@ -27,6 +27,7 @@
                 <th width="">收费项目</th>
                 <th width="">金额</th>
                 <th width="">状态</th>
+                <th width="10%">操作</th>
                 </thead>
                 <tbody>
                 <% if (charges == null || charges.isEmpty()) { %>
@@ -37,6 +38,11 @@
                     <td><%= charge.getItemName() == null ? "" : charge.getItemName() %></td>
                     <td><%= charge.getAmount() == null ? "0" : charge.getAmount() %></td>
                     <td><%= charge.getStatus() == null ? "" : charge.getStatus() %></td>
+                    <td>
+                        <% if ("未缴费".equals(charge.getStatus())) { %>
+                        <a href="patient-charges?action=pay&id=<%= charge.getId() %>">缴费</a>
+                        <% } %>
+                    </td>
                 </tr>
                 <% }} %>
                 </tbody>

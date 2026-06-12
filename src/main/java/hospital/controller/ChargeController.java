@@ -2,6 +2,7 @@ package hospital.controller;
 
 import hospital.model.Charge;
 import hospital.service.ChargeService;
+import hospital.service.SystemConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,17 @@ public class ChargeController {
     @Autowired
     private ChargeService chargeService;
 
+    @Autowired
+    private SystemConfigService systemConfigService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(HttpServletRequest req) {
         String action = req.getParameter("action");
+
+        if ("fee-setting".equals(action)) {
+            req.setAttribute("registrationFee", systemConfigService.getRegistrationFee());
+            return "charge-fee-setting";
+        }
 
         if ("new".equals(action)) {
             return "charge-form";
@@ -51,6 +60,11 @@ public class ChargeController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String save(HttpServletRequest req) {
+        if ("updateFee".equals(req.getParameter("action"))) {
+            systemConfigService.updateRegistrationFee(parseMoney(req.getParameter("registrationFee")));
+            return "redirect:/charges?action=fee-setting";
+        }
+
         Charge charge = readCharge(req);
         if (charge.getPatientName() == null || charge.getPatientName().trim().isEmpty()) {
             req.setAttribute("error", "患者姓名不能为空");

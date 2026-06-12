@@ -12,6 +12,10 @@ public interface UserMapper {
     User findByUsernameAndPassword(@Param("username") String username,
                                    @Param("password") String password);
 
+    User findByUsername(@Param("username") String username);
+
+    int insert(User user);
+
     int updatePassword(@Param("userId") int userId,
                        @Param("oldPassword") String oldPassword,
                        @Param("newPassword") String newPassword);

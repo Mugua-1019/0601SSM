@@ -1,6 +1,7 @@
 package hospital.controller;
 
 import hospital.model.Doctor;
+import hospital.model.Charge;
 import hospital.model.Registration;
 import hospital.model.User;
 import hospital.service.ChargeService;
@@ -8,6 +9,7 @@ import hospital.service.DepartmentService;
 import hospital.service.DoctorService;
 import hospital.service.MedicalRecordService;
 import hospital.service.RegistrationService;
+import hospital.service.SystemConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +37,15 @@ public class PatientPortalController {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    private SystemConfigService systemConfigService;
+
     @RequestMapping(value = "/patient-appointment", method = RequestMethod.GET)
     public String appointment(HttpServletRequest req) {
         req.setAttribute("patientName", currentPatientName(currentUser(req)));
+        Registration registration = new Registration();
+        registration.setFee(systemConfigService.getRegistrationFee());
+        req.setAttribute("registration", registration);
         setOptions(req);
         return "patient-appointment";
     }
@@ -50,7 +58,7 @@ public class PatientPortalController {
         registration.setPatientName(patientName);
         registration.setDepartmentName(trim(req.getParameter("departmentName")));
         registration.setDoctorName(trim(req.getParameter("doctorName")));
-        registration.setFee(parseMoney(req.getParameter("fee")));
+        registration.setFee(systemConfigService.getRegistrationFee());
         registration.setStatus(WAITING_STATUS);
 
         if (registration.getDepartmentName() == null || registration.getDepartmentName().isEmpty()) {
@@ -90,6 +98,15 @@ public class PatientPortalController {
     @RequestMapping(value = "/patient-charges", method = RequestMethod.GET)
     public String charges(HttpServletRequest req) {
         String patientName = currentPatientName(currentUser(req));
+        String action = req.getParameter("action");
+        if ("pay".equals(action)) {
+            int chargeId = Integer.parseInt(req.getParameter("id"));
+            Charge charge = chargeService.findById(chargeId);
+            if (charge != null && patientName.equals(charge.getPatientName())) {
+                chargeService.updateStatus(chargeId, "已缴费");
+            }
+            return "redirect:/patient-charges";
+        }
         req.setAttribute("charges", chargeService.findByPatientName(patientName));
         return "patient-charge-list";
     }

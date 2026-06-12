@@ -40,6 +40,19 @@
         WHERE id = #{id}
     </select>
 
+    <select id="countUnpaidByPatientName" resultType="int">
+        SELECT COUNT(*)
+        FROM charges
+        WHERE patient_name = #{patientName}
+          AND status = '未缴费'
+    </select>
+
+    <update id="updateStatus">
+        UPDATE charges
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
     <insert id="insert" parameterType="Charge">
         INSERT INTO charges (patient_name, item_name, amount, status)
         VALUES (#{patientName}, #{itemName}, #{amount}, #{status})
