@@ -1,5 +1,6 @@
 package hospital.controller;
 
+import hospital.model.Doctor;
 import hospital.model.DoctorSchedule;
 import hospital.service.DepartmentService;
 import hospital.service.DoctorService;
@@ -59,6 +60,13 @@ public class DoctorScheduleController {
             return "doctor-schedule-form";
         }
 
+        if (!isDoctorInDepartment(schedule.getDoctorName(), schedule.getDepartmentName())) {
+            req.setAttribute("error", "医生不属于所选科室");
+            req.setAttribute("schedule", schedule);
+            setOptions(req);
+            return "doctor-schedule-form";
+        }
+
         try {
             Date.valueOf(schedule.getWorkDate());
             if ("update".equals(req.getParameter("action"))) {
@@ -90,6 +98,18 @@ public class DoctorScheduleController {
     private void setOptions(HttpServletRequest req) {
         req.setAttribute("departments", departmentService.findAll());
         req.setAttribute("doctors", doctorService.findAll());
+    }
+
+    private boolean isDoctorInDepartment(String doctorName, String departmentName) {
+        if (isBlank(doctorName) || isBlank(departmentName)) {
+            return false;
+        }
+        for (Doctor doctor : doctorService.findAll()) {
+            if (doctorName.equals(doctor.getName()) && departmentName.equals(doctor.getDepartment())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int parseId(String value) {
