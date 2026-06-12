@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS system_configs (
 );
 
 INSERT INTO system_configs (config_key, config_value)
-VALUES ('registration_fee', '20.00')
+VALUES ('registration_fee', '2.00')
 ON DUPLICATE KEY UPDATE config_value = VALUES(config_value);
 
 INSERT INTO users (username, password, real_name, role)

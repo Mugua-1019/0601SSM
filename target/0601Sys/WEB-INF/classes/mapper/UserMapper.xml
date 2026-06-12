@@ -17,6 +17,17 @@
           AND password = #{password}
     </select>
 
+    <select id="findByUsername" resultType="User">
+        SELECT id, username, password, real_name, role
+        FROM users
+        WHERE username = #{username}
+    </select>
+
+    <insert id="insert" parameterType="User">
+        INSERT INTO users (username, password, real_name, role)
+        VALUES (#{username}, #{password}, #{realName}, #{role})
+    </insert>
+
     <update id="updatePassword">
         UPDATE users
         SET password = #{newPassword}

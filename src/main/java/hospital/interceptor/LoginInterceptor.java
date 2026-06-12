@@ -57,6 +57,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                 || "/index.jsp".equals(path)
                 || "/login.jsp".equals(path)
                 || "/login".equals(path)
+                || "/register.jsp".equals(path)
+                || "/register".equals(path)
                 || path.startsWith("/css/")
                 || path.startsWith("/js/")
                 || path.startsWith("/images/");
