@@ -31,13 +31,12 @@
                 <th width="">性别</th>
                 <th width="">电话</th>
                 <th width="">等级</th>
-                <th width="">积分</th>
                 <th width="">状态</th>
                 <th width="10%">操作</th>
                 </thead>
                 <tbody>
                 <% if (members == null || members.isEmpty()) { %>
-                <tr><td colspan="8">暂无数据</td></tr>
+                <tr><td colspan="7">暂无数据</td></tr>
                 <% } else { for (Member member : members) { %>
                 <tr>
                     <td><%= member.getId() %></td>
@@ -45,11 +44,10 @@
                     <td><%= member.getGender() == null ? "" : member.getGender() %></td>
                     <td><%= member.getPhone() == null ? "" : member.getPhone() %></td>
                     <td><%= member.getLevel() == null ? "" : member.getLevel() %></td>
-                    <td><%= member.getPoints() %></td>
                     <td><%= member.getStatus() == null ? "" : member.getStatus() %></td>
                     <td>
                         <a href="members?action=edit&id=<%= member.getId() %>"><img src="images/icon/edit.png" width="16" height="16" /></a>
-                        <a href="members?action=delete&id=<%= member.getId() %>" onclick="return confirm('确认删除该会员吗？');"><img src="images/icon/del.png" width="16" height="16" /></a>
+                        <a href="members?action=delete&id=<%= member.getId() %>" onclick="return confirm('确认删除该用户吗？');"><img src="images/icon/del.png" width="16" height="16" /></a>
                     </td>
                 </tr>
                 <% }} %>

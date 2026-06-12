@@ -64,7 +64,6 @@ public class MemberController {
         member.setGender(trim(req.getParameter("gender")));
         member.setPhone(trim(req.getParameter("phone")));
         member.setLevel(trim(req.getParameter("level")));
-        member.setPoints(parseInt(req.getParameter("points")));
         member.setStatus(trim(req.getParameter("status")));
         return member;
     }
@@ -75,13 +74,6 @@ public class MemberController {
         } catch (Exception e) {
             throw new IllegalArgumentException("无效ID：" + value);
         }
-    }
-
-    private int parseInt(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return 0;
-        }
-        return Integer.parseInt(value.trim());
     }
 
     private String trim(String value) {

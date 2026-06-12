@@ -20,7 +20,7 @@
     <% if (edit) { %><input type="hidden" name="id" value="<%= member.getId() %>" /><% } %>
     <div id="contentWrap">
         <div id="widget table-widget">
-            <div class="pageTitle"><%= edit ? "会员修改" : "会员添加" %></div>
+            <div class="pageTitle"><%= edit ? "用户修改" : "用户添加" %></div>
             <% if (error != null) { %><p style="color:red;margin-left:20px;"><%= error %></p><% } %>
             <div class="pageInfo">
                 <table>
@@ -34,13 +34,12 @@
                         <td align="right">电话</td>
                         <td><input type="text" name="phone" value="<%= member == null || member.getPhone() == null ? "" : member.getPhone() %>" /></td>
                         <td align="right">等级</td>
-                        <td><input type="text" name="level" value="<%= member == null || member.getLevel() == null ? "普通会员" : member.getLevel() %>" /></td>
+                        <td><input type="text" name="level" value="<%= member == null || member.getLevel() == null ? "普通用户" : member.getLevel() %>" /></td>
                     </tr>
                     <tr>
-                        <td align="right">积分</td>
-                        <td><input type="number" name="points" value="<%= member == null ? 0 : member.getPoints() %>" /></td>
                         <td align="right">状态</td>
                         <td><input type="text" name="status" value="<%= member == null || member.getStatus() == null ? "正常" : member.getStatus() %>" /></td>
+                        <td></td><td></td>
                     </tr>
                     <tr>
                         <td colspan="4" align="center">

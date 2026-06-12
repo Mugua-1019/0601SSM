@@ -5,8 +5,8 @@
 <mapper namespace="hospital.mapper.MemberMapper">
 
     <insert id="insertUsersAsMembers">
-        INSERT INTO members (name, gender, phone, level, points, status)
-        SELECT COALESCE(NULLIF(real_name, ''), username), NULL, NULL, role, 0, 'normal'
+        INSERT INTO members (name, gender, phone, level, status)
+        SELECT COALESCE(NULLIF(real_name, ''), username), NULL, NULL, role, 'normal'
         FROM users u
         LEFT JOIN (SELECT name FROM members) m
           ON m.name = COALESCE(NULLIF(u.real_name, ''), u.username)
@@ -14,20 +14,20 @@
     </insert>
 
     <select id="findAll" resultType="Member">
-        SELECT id, name, gender, phone, level, points, status
+        SELECT id, name, gender, phone, level, status
         FROM members
         ORDER BY id DESC
     </select>
 
     <select id="findById" resultType="Member">
-        SELECT id, name, gender, phone, level, points, status
+        SELECT id, name, gender, phone, level, status
         FROM members
         WHERE id = #{id}
     </select>
 
     <insert id="insert" parameterType="Member">
-        INSERT INTO members (name, gender, phone, level, points, status)
-        VALUES (#{name}, #{gender}, #{phone}, #{level}, #{points}, #{status})
+        INSERT INTO members (name, gender, phone, level, status)
+        VALUES (#{name}, #{gender}, #{phone}, #{level}, #{status})
     </insert>
 
     <update id="update" parameterType="Member">
@@ -36,7 +36,6 @@
             gender = #{gender},
             phone = #{phone},
             level = #{level},
-            points = #{points},
             status = #{status}
         WHERE id = #{id}
     </update>
