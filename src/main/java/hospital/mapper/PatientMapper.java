@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PatientMapper {
+    int insertUsersAsPatients();
+
     List<Patient> findAll(@Param("keyword") String keyword);
 
     Patient findById(@Param("id") int id);

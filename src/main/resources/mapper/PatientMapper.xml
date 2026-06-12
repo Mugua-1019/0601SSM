@@ -4,6 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hospital.mapper.PatientMapper">
 
+    <insert id="insertUsersAsPatients">
+        INSERT INTO patients (name, gender, age, phone, address)
+        SELECT COALESCE(NULLIF(real_name, ''), username), NULL, 0, NULL, NULL
+        FROM users u
+        LEFT JOIN (SELECT name FROM patients) p
+          ON p.name = COALESCE(NULLIF(u.real_name, ''), u.username)
+        WHERE u.role = 'patient'
+          AND p.name IS NULL
+    </insert>
+
     <select id="findAll" resultType="Patient">
         SELECT id, name, gender, age, phone, address
         FROM patients

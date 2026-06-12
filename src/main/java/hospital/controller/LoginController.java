@@ -1,6 +1,7 @@
 package hospital.controller;
 
 import hospital.model.User;
+import hospital.service.PatientService;
 import hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PatientService patientService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
@@ -54,6 +58,7 @@ public class LoginController {
         user.setPassword(password);
         user.setRealName(realName);
         userService.registerPatient(user);
+        patientService.syncUsersAsPatients();
         req.setAttribute("error", "注册成功，请登录");
         return "login";
     }

@@ -16,6 +16,12 @@ public class PatientServiceImpl implements PatientService {
     private PatientMapper patientMapper;
 
     @Override
+    @Transactional
+    public int syncUsersAsPatients() {
+        return patientMapper.insertUsersAsPatients();
+    }
+
+    @Override
     public List<Patient> findAll(String keyword) {
         String keywordValue = keyword == null || keyword.trim().isEmpty() ? null : keyword.trim();
         return patientMapper.findAll(keywordValue);

@@ -52,6 +52,7 @@ public class PatientController {
     }
 
     private String listPatients(HttpServletRequest req) {
+        patientService.syncUsersAsPatients();
         String keyword = req.getParameter("keyword");
         List<Patient> patients = patientService.findAll(keyword);
         req.setAttribute("patients", patients);

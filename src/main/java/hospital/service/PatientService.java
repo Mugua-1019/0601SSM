@@ -5,6 +5,8 @@ import hospital.model.Patient;
 import java.util.List;
 
 public interface PatientService {
+    int syncUsersAsPatients();
+
     List<Patient> findAll(String keyword);
 
     Patient findById(int id);
