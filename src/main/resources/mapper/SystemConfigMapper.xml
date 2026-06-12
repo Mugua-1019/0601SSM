@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hospital.mapper.SystemConfigMapper">
+
+    <select id="findValue" resultType="string">
+        SELECT config_value
+        FROM system_configs
+        WHERE config_key = #{configKey}
+    </select>
+
+    <insert id="upsert">
+        INSERT INTO system_configs (config_key, config_value)
+        VALUES (#{configKey}, #{configValue})
+        ON DUPLICATE KEY UPDATE config_value = VALUES(config_value)
+    </insert>
+</mapper>
