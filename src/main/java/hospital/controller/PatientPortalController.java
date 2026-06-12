@@ -1,5 +1,6 @@
 package hospital.controller;
 
+import hospital.model.Doctor;
 import hospital.model.Registration;
 import hospital.model.User;
 import hospital.service.ChargeService;
@@ -60,6 +61,14 @@ public class PatientPortalController {
             return "patient-appointment";
         }
 
+        if (!isDoctorInDepartment(registration.getDoctorName(), registration.getDepartmentName())) {
+            req.setAttribute("error", "医生不属于所选科室");
+            req.setAttribute("registration", registration);
+            req.setAttribute("patientName", patientName);
+            setOptions(req);
+            return "patient-appointment";
+        }
+
         registrationService.insert(registration);
         return "redirect:/patient-registrations";
     }
@@ -92,6 +101,18 @@ public class PatientPortalController {
     private void setOptions(HttpServletRequest req) {
         req.setAttribute("departments", departmentService.findAll());
         req.setAttribute("doctors", doctorService.findAll());
+    }
+
+    private boolean isDoctorInDepartment(String doctorName, String departmentName) {
+        if (doctorName == null || doctorName.trim().isEmpty()) {
+            return false;
+        }
+        for (Doctor doctor : doctorService.findAll()) {
+            if (doctorName.equals(doctor.getName()) && departmentName.equals(doctor.getDepartment())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String currentPatientName(User user) {

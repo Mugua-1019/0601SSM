@@ -1,5 +1,6 @@
 package hospital.controller;
 
+import hospital.model.Doctor;
 import hospital.model.Registration;
 import hospital.service.DepartmentService;
 import hospital.service.DoctorService;
@@ -59,6 +60,13 @@ public class RegistrationController {
             return "registration-form";
         }
 
+        if (!isDoctorInDepartment(registration.getDoctorName(), registration.getDepartmentName())) {
+            req.setAttribute("error", "医生不属于所选科室");
+            req.setAttribute("registration", registration);
+            setOptions(req);
+            return "registration-form";
+        }
+
         if ("update".equals(req.getParameter("action"))) {
             registration.setId(parseId(req.getParameter("id")));
             registrationService.update(registration);
@@ -82,6 +90,18 @@ public class RegistrationController {
     private void setOptions(HttpServletRequest req) {
         req.setAttribute("departments", departmentService.findAll());
         req.setAttribute("doctors", doctorService.findAll());
+    }
+
+    private boolean isDoctorInDepartment(String doctorName, String departmentName) {
+        if (doctorName == null || doctorName.trim().isEmpty()) {
+            return false;
+        }
+        for (Doctor doctor : doctorService.findAll()) {
+            if (doctorName.equals(doctor.getName()) && departmentName.equals(doctor.getDepartment())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int parseId(String value) {

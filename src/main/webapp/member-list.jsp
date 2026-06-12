@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>会员管理</title>
+    <title>用户管理</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -18,15 +18,15 @@
 <body>
 <div id="contentWrap">
     <div id="widget table-widget">
-        <div class="pageTitle">会员管理</div>
+        <div class="pageTitle">用户管理</div>
         <div class="pageColumn">
             <div class="pageButton">
                 <a href="members?action=new"><img src="images/t01.png" title="新增"/></a>
-                <span>会员列表</span>
+                <span>用户列表</span>
             </div>
             <table>
                 <thead>
-                <th width="">会员ID</th>
+                <th width="">ID</th>
                 <th width="">姓名</th>
                 <th width="">性别</th>
                 <th width="">电话</th>
@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                 <% if (members == null || members.isEmpty()) { %>
-                <tr><td colspan="8">暂无会员数据</td></tr>
+                <tr><td colspan="8">暂无数据</td></tr>
                 <% } else { for (Member member : members) { %>
                 <tr>
                     <td><%= member.getId() %></td>

@@ -19,6 +19,27 @@
     <title>预约挂号</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            function filterDoctors() {
+                var department = $('#departmentName').val();
+                var selectedVisible = false;
+                $('#doctorName option').each(function () {
+                    var doctorDepartment = $(this).data('department');
+                    var show = !doctorDepartment || !department || doctorDepartment === department;
+                    $(this).toggle(show);
+                    if (show && this.selected) {
+                        selectedVisible = true;
+                    }
+                });
+                if (!selectedVisible) {
+                    $('#doctorName').val('');
+                }
+            }
+            $('#departmentName').change(filterDoctors);
+            filterDoctors();
+        });
+    </script>
     <style type="text/css">body { background:#FFF }</style>
 </head>
 <body>
@@ -34,7 +55,7 @@
                         <td width="20%"><input type="text" value="<%= patientName == null ? "" : patientName %>" readonly="readonly" /></td>
                         <td width="10%" align="right">科室</td>
                         <td width="50%">
-                            <select name="departmentName">
+                            <select name="departmentName" id="departmentName">
                                 <option value="">--select--</option>
                                 <% if (departments != null) { for (Department department : departments) {
                                     String departmentName = department.getName() == null ? "" : department.getName();
@@ -47,17 +68,18 @@
                     <tr>
                         <td align="right">医生</td>
                         <td>
-                            <select name="doctorName">
+                            <select name="doctorName" id="doctorName">
                                 <option value="">--select--</option>
                                 <% if (doctors != null) { for (Doctor doctor : doctors) {
                                     String doctorName = doctor.getName() == null ? "" : doctor.getName();
+                                    String doctorDepartment = doctor.getDepartment() == null ? "" : doctor.getDepartment();
                                 %>
-                                <option value="<%= doctorName %>" <%= doctorName.equals(currentDoctorName) ? "selected" : "" %>><%= doctorName %></option>
+                                <option value="<%= doctorName %>" data-department="<%= doctorDepartment %>" <%= doctorName.equals(currentDoctorName) ? "selected" : "" %>><%= doctorName %></option>
                                 <% }} %>
                             </select>
                         </td>
                         <td align="right">挂号费</td>
-                        <td><input type="text" name="fee" value="<%= registration == null || registration.getFee() == null ? "0" : registration.getFee() %>" /></td>
+                        <td><input type="text" name="fee" value="<%= registration == null || registration.getFee() == null ? "0" : registration.getFee() %>" readonly="readonly" /></td>
                     </tr>
                     <tr>
                         <td colspan="4" align="center">
