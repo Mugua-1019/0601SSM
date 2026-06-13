@@ -12,6 +12,9 @@ public interface RegistrationMapper {
 
     List<Registration> findByDoctorName(@Param("doctorName") String doctorName);
 
+    List<Registration> findByCondition(@Param("patientName") String patientName,
+                                       @Param("departmentName") String departmentName);
+
     Registration findById(@Param("id") int id);
 
     int insert(Registration registration);

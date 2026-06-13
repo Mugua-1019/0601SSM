@@ -59,7 +59,11 @@ public class DepartmentController {
     }
 
     private String listDepartments(HttpServletRequest req) {
-        List<Department> departments = departmentService.findAll();
+        String name = trim(req.getParameter("name"));
+        req.setAttribute("name", name);
+        List<Department> departments = notBlank(name)
+                ? departmentService.findByCondition(name)
+                : departmentService.findAll();
         req.setAttribute("departments", departments);
         return "department-list";
     }
@@ -79,6 +83,14 @@ public class DepartmentController {
         department.setName(name.trim());
         department.setDescription(description == null ? null : description.trim());
         return department;
+    }
+
+    private boolean notBlank(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
+
+    private String trim(String value) {
+        return value == null ? null : value.trim();
     }
 
     private int parseId(String value) {

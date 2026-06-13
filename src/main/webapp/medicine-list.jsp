@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%
     List<Medicine> medicines = (List<Medicine>) request.getAttribute("medicines");
+    String name = (String) request.getAttribute("name");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,12 +19,14 @@
 <div id="contentWrap">
     <div id="widget table-widget">
         <div class="pageTitle">药品管理</div>
-        <div class="querybody">
-            <ul class="seachform">
-                <li><label>药品名称</label><input name="name" type="text" class="scinput" /></li>
-                <li><label>&nbsp;</label><input type="button" class="scbtn" value="查询"/></li>
-            </ul>
-        </div>
+        <form method="get" action="medicines">
+            <div class="querybody">
+                <ul class="seachform">
+                    <li><label>药品名称</label><input name="name" type="text" class="scinput" value="<%= name == null ? "" : name %>" /></li>
+                    <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+                </ul>
+            </div>
+        </form>
         <div class="pageColumn">
             <div class="pageButton"><a href="medicines?action=new"><img src="images/t01.png" title="新增"/></a><span>药品列表</span></div>
             <table>

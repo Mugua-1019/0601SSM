@@ -21,6 +21,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public List<Doctor> findByCondition(String name, String department) {
+        return doctorMapper.findByCondition(blankToNull(name), blankToNull(department));
+    }
+
+    @Override
     public Doctor findById(int id) {
         return doctorMapper.findById(id);
     }
@@ -41,5 +46,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Transactional
     public int deleteById(int id) {
         return doctorMapper.deleteById(id);
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

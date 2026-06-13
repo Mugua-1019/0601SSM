@@ -12,6 +12,9 @@ public interface MedicalRecordMapper {
 
     List<MedicalRecord> findByDoctorName(@Param("doctorName") String doctorName);
 
+    List<MedicalRecord> findByCondition(@Param("patientName") String patientName,
+                                        @Param("doctorName") String doctorName);
+
     MedicalRecord findById(@Param("id") int id);
 
     int insert(MedicalRecord record);

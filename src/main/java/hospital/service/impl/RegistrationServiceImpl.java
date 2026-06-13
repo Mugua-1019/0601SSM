@@ -31,6 +31,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    public List<Registration> findByCondition(String patientName, String departmentName) {
+        return registrationMapper.findByCondition(blankToNull(patientName), blankToNull(departmentName));
+    }
+
+    @Override
     public Registration findById(int id) {
         return registrationMapper.findById(id);
     }
@@ -57,5 +62,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     public int updateStatus(int id, String status) {
         return registrationMapper.updateStatus(id, status);
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

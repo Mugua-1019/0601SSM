@@ -21,6 +21,11 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
+    public List<Medicine> findByCondition(String name) {
+        return medicineMapper.findByCondition(blankToNull(name));
+    }
+
+    @Override
     public Medicine findById(int id) {
         return medicineMapper.findById(id);
     }
@@ -41,5 +46,9 @@ public class MedicineServiceImpl implements MedicineService {
     @Transactional
     public int deleteById(int id) {
         return medicineMapper.deleteById(id);
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

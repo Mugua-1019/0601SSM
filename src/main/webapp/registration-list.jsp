@@ -3,6 +3,8 @@
 <%@ page import="java.util.List" %>
 <%
     List<Registration> registrations = (List<Registration>) request.getAttribute("registrations");
+    String patientName = (String) request.getAttribute("patientName");
+    String departmentName = (String) request.getAttribute("departmentName");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,13 +21,15 @@
 <div id="contentWrap">
     <div id="widget table-widget">
         <div class="pageTitle">挂号管理</div>
-        <div class="querybody">
-            <ul class="seachform">
-                <li><label>患者姓名</label><input name="patientName" type="text" class="scinput" /></li>
-                <li><label>科室</label><input name="departmentName" type="text" class="scinput" /></li>
-                <li><label>&nbsp;</label><input type="button" class="scbtn" value="查询"/></li>
-            </ul>
-        </div>
+        <form method="get" action="registrations">
+            <div class="querybody">
+                <ul class="seachform">
+                    <li><label>患者姓名</label><input name="patientName" type="text" class="scinput" value="<%= patientName == null ? "" : patientName %>" /></li>
+                    <li><label>科室</label><input name="departmentName" type="text" class="scinput" value="<%= departmentName == null ? "" : departmentName %>" /></li>
+                    <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+                </ul>
+            </div>
+        </form>
         <div class="pageColumn">
             <div class="pageButton">
                 <a href="registrations?action=new"><img src="images/t01.png" title="新增"/></a>

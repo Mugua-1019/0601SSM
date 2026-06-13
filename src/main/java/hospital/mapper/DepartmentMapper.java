@@ -8,6 +8,8 @@ import java.util.List;
 public interface DepartmentMapper {
     List<Department> findAll();
 
+    List<Department> findByCondition(@Param("name") String name);
+
     Department findById(@Param("id") int id);
 
     int insert(Department department);

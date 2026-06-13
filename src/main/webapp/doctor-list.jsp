@@ -3,6 +3,8 @@
 <%@ page import="java.util.List" %>
 <%
     List<Doctor> doctors = (List<Doctor>) request.getAttribute("doctors");
+    String name = (String) request.getAttribute("name");
+    String department = (String) request.getAttribute("department");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,13 +21,15 @@
 <div id="contentWrap">
     <div id="widget table-widget">
         <div class="pageTitle">医生管理</div>
-        <div class="querybody">
-            <ul class="seachform">
-                <li><label>医生名称</label><input name="name" type="text" class="scinput" /></li>
-                <li><label>科室</label><input name="department" type="text" class="scinput" /></li>
-                <li><label>&nbsp;</label><input type="button" class="scbtn" value="查询"/></li>
-            </ul>
-        </div>
+        <form method="get" action="doctors">
+            <div class="querybody">
+                <ul class="seachform">
+                    <li><label>医生名称</label><input name="name" type="text" class="scinput" value="<%= name == null ? "" : name %>" /></li>
+                    <li><label>科室</label><input name="department" type="text" class="scinput" value="<%= department == null ? "" : department %>" /></li>
+                    <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+                </ul>
+            </div>
+        </form>
         <div class="pageColumn">
             <div class="pageButton">
                 <a href="doctors?action=new"><img src="images/t01.png" title="新增"/></a>

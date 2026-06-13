@@ -10,6 +10,17 @@
         ORDER BY id DESC
     </select>
 
+    <select id="findByCondition" resultType="Medicine">
+        SELECT id, name, specification, stock, price
+        FROM medicines
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
     <select id="findById" resultType="Medicine">
         SELECT id, name, specification, stock, price
         FROM medicines

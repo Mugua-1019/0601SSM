@@ -31,6 +31,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
+    public List<MedicalRecord> findByCondition(String patientName, String doctorName) {
+        return recordMapper.findByCondition(blankToNull(patientName), blankToNull(doctorName));
+    }
+
+    @Override
     public MedicalRecord findById(int id) {
         return recordMapper.findById(id);
     }
@@ -51,5 +56,9 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     @Transactional
     public int deleteById(int id) {
         return recordMapper.deleteById(id);
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

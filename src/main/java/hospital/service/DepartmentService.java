@@ -7,6 +7,8 @@ import java.util.List;
 public interface DepartmentService {
     List<Department> findAll();
 
+    List<Department> findByCondition(String name);
+
     Department findById(int id);
 
     int insert(Department department);

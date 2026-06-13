@@ -10,6 +10,20 @@
         ORDER BY id DESC
     </select>
 
+    <select id="findByCondition" resultType="Doctor">
+        SELECT id, name, department, title, phone, email
+        FROM doctors
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="department != null and department != ''">
+                AND department LIKE CONCAT('%', #{department}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
     <select id="findById" resultType="Doctor">
         SELECT id, name, department, title, phone, email
         FROM doctors

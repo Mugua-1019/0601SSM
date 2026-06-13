@@ -11,6 +11,8 @@ public interface MedicalRecordService {
 
     List<MedicalRecord> findByDoctorName(String doctorName);
 
+    List<MedicalRecord> findByCondition(String patientName, String doctorName);
+
     MedicalRecord findById(int id);
 
     int insert(MedicalRecord record);

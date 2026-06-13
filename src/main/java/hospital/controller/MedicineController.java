@@ -35,7 +35,13 @@ public class MedicineController {
             return "redirect:/medicines";
         }
 
-        req.setAttribute("medicines", medicineService.findAll());
+        String name = trim(req.getParameter("name"));
+        req.setAttribute("name", name);
+        if (notBlank(name)) {
+            req.setAttribute("medicines", medicineService.findByCondition(name));
+        } else {
+            req.setAttribute("medicines", medicineService.findAll());
+        }
         return "medicine-list";
     }
 
@@ -91,5 +97,9 @@ public class MedicineController {
 
     private String trim(String value) {
         return value == null ? null : value.trim();
+    }
+
+    private boolean notBlank(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }

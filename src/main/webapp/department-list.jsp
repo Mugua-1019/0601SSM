@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%
     List<Department> departments = (List<Department>) request.getAttribute("departments");
+    String name = (String) request.getAttribute("name");
     String error = (String) request.getAttribute("error");
 %>
 <!DOCTYPE html>
@@ -21,12 +22,14 @@
 <div id="contentWrap">
     <div id="widget table-widget">
         <div class="pageTitle">科室管理</div>
-        <div class="querybody">
-            <ul class="seachform">
-                <li><label>科室名称</label><input name="name" type="text" class="scinput" /></li>
-                <li><label>&nbsp;</label><input type="button" class="scbtn" value="查询"/></li>
-            </ul>
-        </div>
+        <form method="get" action="departments">
+            <div class="querybody">
+                <ul class="seachform">
+                    <li><label>科室名称</label><input name="name" type="text" class="scinput" value="<%= name == null ? "" : name %>" /></li>
+                    <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+                </ul>
+            </div>
+        </form>
         <% if (error != null) { %>
         <p style="color:red;margin-left:20px;"><%= error %></p>
         <% } %>

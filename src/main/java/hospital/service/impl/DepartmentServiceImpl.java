@@ -21,6 +21,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public List<Department> findByCondition(String name) {
+        return departmentMapper.findByCondition(blankToNull(name));
+    }
+
+    @Override
     public Department findById(int id) {
         return departmentMapper.findById(id);
     }
@@ -41,5 +46,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public int deleteById(int id) {
         return departmentMapper.deleteById(id);
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

@@ -24,6 +24,20 @@
         ORDER BY id DESC
     </select>
 
+    <select id="findByCondition" resultType="Registration">
+        SELECT id, patient_name, department_name, doctor_name, fee, status
+        FROM registrations
+        <where>
+            <if test="patientName != null and patientName != ''">
+                AND patient_name LIKE CONCAT('%', #{patientName}, '%')
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                AND department_name LIKE CONCAT('%', #{departmentName}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
     <select id="findById" resultType="Registration">
         SELECT id, patient_name, department_name, doctor_name, fee, status
         FROM registrations

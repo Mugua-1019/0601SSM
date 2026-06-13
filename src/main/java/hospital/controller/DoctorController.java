@@ -41,7 +41,15 @@ public class DoctorController {
             return "redirect:/doctors";
         }
 
-        req.setAttribute("doctors", doctorService.findAll());
+        String name = trim(req.getParameter("name"));
+        String department = trim(req.getParameter("department"));
+        req.setAttribute("name", name);
+        req.setAttribute("department", department);
+        if (notBlank(name) || notBlank(department)) {
+            req.setAttribute("doctors", doctorService.findByCondition(name, department));
+        } else {
+            req.setAttribute("doctors", doctorService.findAll());
+        }
         return "doctor-list";
     }
 
@@ -89,5 +97,9 @@ public class DoctorController {
 
     private String trim(String value) {
         return value == null ? null : value.trim();
+    }
+
+    private boolean notBlank(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }

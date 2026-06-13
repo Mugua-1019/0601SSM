@@ -11,6 +11,8 @@ public interface RegistrationService {
 
     List<Registration> findByDoctorName(String doctorName);
 
+    List<Registration> findByCondition(String patientName, String departmentName);
+
     Registration findById(int id);
 
     int insert(Registration registration);

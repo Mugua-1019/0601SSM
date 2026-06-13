@@ -8,6 +8,8 @@ import java.util.List;
 public interface MedicineMapper {
     List<Medicine> findAll();
 
+    List<Medicine> findByCondition(@Param("name") String name);
+
     Medicine findById(@Param("id") int id);
 
     int insert(Medicine medicine);

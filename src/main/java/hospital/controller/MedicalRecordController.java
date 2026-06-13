@@ -40,7 +40,15 @@ public class MedicalRecordController {
             return "redirect:/records";
         }
 
-        req.setAttribute("records", recordService.findAll());
+        String patientName = trim(req.getParameter("patientName"));
+        String doctorName = trim(req.getParameter("doctorName"));
+        req.setAttribute("patientName", patientName);
+        req.setAttribute("doctorName", doctorName);
+        if (notBlank(patientName) || notBlank(doctorName)) {
+            req.setAttribute("records", recordService.findByCondition(patientName, doctorName));
+        } else {
+            req.setAttribute("records", recordService.findAll());
+        }
         return "record-list";
     }
 
@@ -87,5 +95,9 @@ public class MedicalRecordController {
 
     private String trim(String value) {
         return value == null ? null : value.trim();
+    }
+
+    private boolean notBlank(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }

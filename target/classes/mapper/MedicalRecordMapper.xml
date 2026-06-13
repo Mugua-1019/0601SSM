@@ -24,6 +24,20 @@
         ORDER BY id DESC
     </select>
 
+    <select id="findByCondition" resultType="MedicalRecord">
+        SELECT id, patient_name, doctor_name, diagnosis, treatment
+        FROM medical_records
+        <where>
+            <if test="patientName != null and patientName != ''">
+                AND patient_name LIKE CONCAT('%', #{patientName}, '%')
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                AND doctor_name LIKE CONCAT('%', #{doctorName}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
     <select id="findById" resultType="MedicalRecord">
         SELECT id, patient_name, doctor_name, diagnosis, treatment
         FROM medical_records

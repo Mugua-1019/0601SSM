@@ -46,7 +46,15 @@ public class RegistrationController {
             return "redirect:/registrations";
         }
 
-        req.setAttribute("registrations", registrationService.findAll());
+        String patientName = trim(req.getParameter("patientName"));
+        String departmentName = trim(req.getParameter("departmentName"));
+        req.setAttribute("patientName", patientName);
+        req.setAttribute("departmentName", departmentName);
+        if (notBlank(patientName) || notBlank(departmentName)) {
+            req.setAttribute("registrations", registrationService.findByCondition(patientName, departmentName));
+        } else {
+            req.setAttribute("registrations", registrationService.findAll());
+        }
         return "registration-list";
     }
 
@@ -121,5 +129,9 @@ public class RegistrationController {
 
     private String trim(String value) {
         return value == null ? null : value.trim();
+    }
+
+    private boolean notBlank(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }
